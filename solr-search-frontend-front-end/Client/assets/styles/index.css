@@ -1,0 +1,69 @@
+.title-container{
+    text-align: center;
+}
+
+.Search-Container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.Search-Container div{
+    width: 50%;
+}
+
+.Search-Container button{
+    width: 10%;
+    height: 100%;
+}
+
+.dynamic-continer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.dynamic-continer nav{
+    width: 30%;
+    justify-content: center;
+}
+
+.dynamic-continer nav div{
+    width: 100%;
+    justify-content: center;
+    border: none;
+    background: none;
+    padding: 1%;
+    overflow: hidden;
+    text-align: center;
+}
+
+.dynamic-continer nav div button{
+    width: 100%;
+    justify-content: center;
+    border: 1px;
+    background: none;
+    padding: 1%;
+    overflow: hidden;
+    text-align: center;
+    align-content: center;
+}
+
+.dynamic-continer nav button{
+    width: 100%;
+}
+
+
+.dynamic-continer section{
+    width: 70%;
+    justify-content: center;
+}
+
+.suggestion-container{
+    width: 100%;
+    text-align: center;
+}
+
+#suggestion-container{
+    display: none;
+}
