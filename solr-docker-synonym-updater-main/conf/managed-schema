@@ -15,11 +15,8 @@
     <field name="_title_" type="text_general" indexed="true" stored="false" multiValued="true"/>
     <field name="title" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="text" type="text_general" indexed="true" stored="true" multiValued="true"/>
-    <field name="url" type="string" indexed="true" stored="true" multiValued="true"/>
-    <field name="base_url" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="_text_" type="text_general" indexed="true" stored="false" multiValued="true"/>
     <field name="_snippet_" type="string" indexed="true" stored="true" multiValued="true"/>
-    <field name="size" type="pdouble" indexed="true" stored="true" multiValued="true"/>
 
 
 

@@ -17,7 +17,7 @@ async def upload_document(file: UploadFile = File(...)):
         myfile.close()
 
     client = clientSorl()
-    client.submit_document(Path_File + file.filename)
+    client.submit_document(Path_File + file.filename, file.filename)
 
     return JSONResponse(content={"message": "success"}, status_code=200)
 

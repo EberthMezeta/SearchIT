@@ -15,7 +15,7 @@ class clientSorl:
     solr = pysolr.Solr(
         f'http://{solr_host}:8983/solr/mycore/', always_commit=True)
 
-    def submit_document(self, Path_File):
+    def submit_document(self, Path_File, title_file):
 
         pdfextractor = pdfDataExtractor()
 
@@ -23,9 +23,8 @@ class clientSorl:
         content = pdfextractor.get_text_content(Path_File)
 
         tokenz = tokenize.get_tokenz(content)
-        metadata = pdfextractor.get_meta_data(Path_File)
-        print(metadata)
-        title = "pez"
+   
+        title = title_file
 
         for token in tokenz:
             self.updateSynonyms(token)
@@ -34,7 +33,6 @@ class clientSorl:
         textUnWhiteSPace = pdfextractor.get_text_content_no_white_space(
             Path_File)
         snipped = textUnWhiteSPace[0:50]
-        size = len(tokenz)
         textClean = " ".join(tokenz)
 
         document = {
@@ -43,9 +41,6 @@ class clientSorl:
             "text": textClean,
             "_text_": textClean,
             "_snippet_": snipped,
-            "size": size,
-            "url": "wwww.h3docs.com/gfgdfgdf",
-            "base_url": "wwww.h3docs.com"
         }
         self.solr.add([document])
 

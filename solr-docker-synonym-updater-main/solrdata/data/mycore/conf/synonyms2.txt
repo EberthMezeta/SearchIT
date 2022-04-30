@@ -17,7 +17,7 @@ creciente,progresivo
 ejemplar,libro,volumen,fuerza,intensidad,masa,bulto,voluminosidad,audio,sonido,tomo
 existente,real
 tipo,somatotipo,clase,especie,variedad,tio,elemento,tarifa
-contacto,conexion,coordinacion,roce,toque,enlace,intercambio,relacion,trato,cambio,giro,resultado_inesperado,vuelco,canje,retorno,trueque,mejora,variedad,alteracion,modificacion,variacion,conver,mutacion,transformacion,transmutacion,vuelta,efectivi,picadillo,acuerdo,comercio,negocio,operacion_comercial,transaccion,correspondencia,resolucion,compromiso,pacto,concordato,convenio,tratado,tratado_internacional,conformidad,acomodo,adaptacion,ajuste,armonia
+contacto,conexion,coordinacion,roce,toque,enlace,intercambio,relacion,trato,cambio,giro,resultado_inesperado,vuelco,canje,retorno,trueque,mejora,variedad,alteracion,modificacion,variacion,conver,mutacion,transformacion,transmutacion,vuelta,efectivi,picadillo,acuerdo,comercio,negocio,operacion_comercial,transaccion,correspondencia,resolucion,compromiso,pacto,concordato,convenio,tratado,tratado_internacional,conformidad,acomodo,adaptacion,ajuste,armonia,almacen,establecimiento,tienda,tienda_de_campana
 gente,personas,pueblo
 inadecuado,inigual,desgraciado
 vida,camino,estilo_de_vida,senda,trayectoria,via,alegria,existencia
