@@ -3,6 +3,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from os import getcwd
 from utils.solrClient import clientSorl
 from fastapi.exceptions import HTTPException
+from langdetect import detect
 
 
 router = APIRouter()
@@ -15,6 +16,11 @@ async def upload_document(file: UploadFile = File(...)):
     try:
         with open(Path_File + file.filename, "wb") as myfile:
             content = await file.read()
+
+            if detect((content.decode(errors="ignore"))[0:50]) != "es":
+                print("Unsupported language for document")
+                raise Exception("Unsupported language for document")
+
             myfile.write(content)
             myfile.close()
 

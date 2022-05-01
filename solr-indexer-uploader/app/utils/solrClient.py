@@ -1,5 +1,4 @@
 from utils.pdfDataExtractor import pdfDataExtractor
-from langdetect import detect
 from utils.tokenizer import tokenizer
 import pysolr
 import os
@@ -20,10 +19,6 @@ class clientSorl:
         pdfextractor = pdfDataExtractor()
 
         content = pdfextractor.get_text_content(Path_File)
-        
-        if detect(content[0:50]) != "es":
-            print("Unsupported language for document")
-            raise Exception("Unsupported language for document")
 
         tokenize = tokenizer()
         tokenz = tokenize.get_tokenz(content)
