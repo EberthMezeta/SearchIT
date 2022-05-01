@@ -112,7 +112,9 @@ const getResponse = async(direction) => {
         console.log(data)
 
     } catch (error) {
-        CONTAINER_RESULTS.innerHTML = "ocurrio un error indesperado";
+        //Nos dimos cuenta que este error era debido a un mal manejo de facetas, pero esto fue arreglado al remover las facetas,
+        //de todos modos si llegara a pasar algun error, esconderlo al usuario y decirle que no se encontraron resultados
+        CONTAINER_RESULTS.innerHTML = "No se encontraron resultados";
         console.log(error)
     }
 };
