@@ -2,6 +2,7 @@ from fastapi import APIRouter, UploadFile, File
 from fastapi.responses import FileResponse, JSONResponse
 from os import getcwd
 from utils.solrClient import clientSorl
+from fastapi.exceptions import HTTPException
 
 
 router = APIRouter()
@@ -11,16 +12,18 @@ Path_File = getcwd() + "/"
 
 @router.post('/upload')
 async def upload_document(file: UploadFile = File(...)):
-    with open(Path_File + file.filename, "wb") as myfile:
-        content = await file.read()
-        myfile.write(content)
-        myfile.close()
+    try:
+        with open(Path_File + file.filename, "wb") as myfile:
+            content = await file.read()
+            myfile.write(content)
+            myfile.close()
 
-    client = clientSorl()
-    client.submit_document(Path_File + file.filename, file.filename)
+        client = clientSorl()
+        client.submit_document(Path_File + file.filename, file.filename)
 
-    return JSONResponse(content={"message": "success"}, status_code=200)
-
+        return JSONResponse(content={"message": "success"}, status_code=200)
+    except BaseException as ex:
+        raise HTTPException(400, detail=str(ex))
 
 @router.get('/file/{name_document}')
 def get_document(name_document: str):
