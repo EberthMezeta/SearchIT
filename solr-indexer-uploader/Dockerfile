@@ -2,7 +2,7 @@ FROM python:3.7-slim
 
 WORKDIR /app
 
-RUN pip3 install nltk pysolr requests unidecode uvicorn fastapi aiofiles python-multipart pdfplumber
+RUN pip3 install nltk pysolr requests unidecode uvicorn fastapi aiofiles python-multipart pdfplumber langdetect
 COPY install_dictionary.py /install_dictionary.py
 RUN python3 /install_dictionary.py
 EXPOSE 8094
