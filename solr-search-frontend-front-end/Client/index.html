@@ -15,6 +15,11 @@
     <header class="title-container">
         <h1>Sistema de búsqueda y recuperación de información</h1>
     </header>
+    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+    <form action="http://localhost:8094/upload" enctype="multipart/form-data" method="post" autocomplete="off" target="dummyframe">
+        <input type="file" id="file" name="file">
+        <input type="submit">
+    </form>
     <section class="Search-Container">
         <div class="autocomplete">
             <input class="form-control" id="SearchInput" type="text" name="Search">
