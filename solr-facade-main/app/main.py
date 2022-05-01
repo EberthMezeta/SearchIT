@@ -58,32 +58,42 @@ async def suggest_endpoint(q:str):
         suggest_json = suggest_response.json()
         return {"results": suggest_json}   
     except BaseException as ex:
-        return []
+        return {"results": [traceback.format_exc()]}
+
 
 def get_clean_query(q):
-    #lower case
-    clean_query = q.lower() 
-    #remove accents
-    clean_query = unidecode.unidecode(clean_query) 
-    #tokenize
-    tokens = word_tokenize(clean_query, language="spanish")
-    #Remove punctuations, other formalities of grammar
-    tokens = [word for word in tokens if word.isalpha()]
-    #Remove white spaces and StopWords
-    tokens = [word for word in tokens if not word in stopwords.words("spanish")]
-    
-    clean_query = ""
-    for token in tokens:
-        word = str(token)
-        if word != 'not' and word != 'and' and word != 'or':
-            clean_query = clean_query + word + '~ '
-        else:
-            clean_query = clean_query + word + ' '
+    try:
+        #lower case
+        clean_query = q.lower() 
+        #remove accents
+        clean_query = unidecode.unidecode(clean_query) 
+        #tokenize
+        tokens = word_tokenize(clean_query, language="spanish")
+        #Remove punctuations, other formalities of grammar
+        tokens = [word for word in tokens if word.isalpha()]
+        #Remove white spaces and StopWords
+        tokens = [word for word in tokens if not word in stopwords.words("spanish")]
+        
+        clean_query = ""
+        for token in tokens:
+            word = str(token)
+            if word != 'not' and word != 'and' and word != 'or':
+                clean_query = clean_query + word + '~ '
+            else:
+                clean_query = clean_query + word + ' '
 
-    if len(tokens) == 0:
-        clean_query = '*:*'
-    return clean_query
+        if len(tokens) == 0:
+            clean_query = '*:*'
 
+        return clean_query
+
+    except BaseException as ex:
+        print(traceback.format_exc())
+        '''
+        Si hay algun error en el procesamiento de la consulta, 
+        no hay que fallar, hay que presentar resultados
+        '''
+        return '*:*'
 
 if __name__=="__main__":
     uvicorn.run("main:app",host='localhost', port=8093, reload=True, debug=True)

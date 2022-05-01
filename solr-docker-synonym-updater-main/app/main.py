@@ -43,6 +43,12 @@ def consume_queue(update_queue):
             print(datetime.now().isoformat() + " " + traceback.format_exc())
         time.sleep(run_interval)
 
+'''
+Funcion que carga a memoria los sinonimos
+en listas y diccionarios, el acceso a listas
+y diccionarios se ha revisado y es seguro de no hacer
+accesos ilegales a llaves o indices que no existen
+'''
 def process_synonyms(synonym_list):
     global synonym_lines_len
 
@@ -83,20 +89,29 @@ def process_synonyms(synonym_list):
     pass
 
 def load_synonyms():
-    with open(synonyms_path) as f:
-        lines = f.read().splitlines()
-        global synonym_lines_len
-        synonym_lines_len = len(lines)
-        for idx, line in enumerate(lines):
-            words = line.split(',')
-            for word in words:
-                lines_by_synonyms[word] = idx
+    try:
+        with open(synonyms_path) as f:
+            lines = f.read().splitlines()
+            global synonym_lines_len
+            synonym_lines_len = len(lines)
+            for idx, line in enumerate(lines):
+                words = line.split(',')
+                for word in words:
+                    lines_by_synonyms[word] = idx
 
-                if idx not in synonyms_by_line:
-                    synonyms_by_line[idx] = []
-                synonyms_by_line[idx].append(word)
-    
+                    if idx not in synonyms_by_line:
+                        synonyms_by_line[idx] = []
+                    synonyms_by_line[idx].append(word)
+    except:
+        '''
+        No hay que fallar la inicializacion del programa
+        Si no existe el archivo de sinonimos, este podria no existir o ser modificado
+        '''
+        pass
 
+'''
+Actualizar los sinonimos de la configuracion de SOLR
+'''
 def dump_synonyms():
 
     #wipe existing temp

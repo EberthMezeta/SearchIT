@@ -15,6 +15,5 @@ class tokenizer:
         # Remove punctuations, other formalities of grammar
         tokens = [word for word in tokens if word.isalpha()]
         # Remove white spaces and StopWords
-        tokens = [
-            word for word in tokens if not word in stopwords.words("spanish")]
+        tokens = [word for word in tokens if not word in stopwords.words("spanish")]
         return tokens
