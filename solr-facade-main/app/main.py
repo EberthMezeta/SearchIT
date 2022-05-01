@@ -32,18 +32,6 @@ headers = {
 
 request_object = {
   "query": "query_replacement",
-  "facet": {
-    "url" : {
-      "type": "terms",
-      "field": "base_url",
-      "limit": 10
-    },
-    "size":{
-      "type": "terms",
-      "field": "size",
-      "limit": 3000
-    }
-  }
 }
 
 
