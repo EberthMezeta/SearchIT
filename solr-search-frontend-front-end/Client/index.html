@@ -1,46 +1,408 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/styles/index.css">
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
-    <title>Sistema de búsqueda y recuperación</title>
-</head>
+    <title>Search.IT | Home</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
 
-<body>
-    <header class="title-container">
-        <h1>Sistema de búsqueda y recuperación de información</h1>
-    </header>
-    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-    <form action="http://localhost:8094/upload" enctype="multipart/form-data" method="post" autocomplete="off" target="dummyframe">
-        <input type="file" id="file" name="file">
-        <input type="submit">
-    </form>
-    <section class="Search-Container">
-        <div class="autocomplete">
-            <input class="form-control" id="SearchInput" type="text" name="Search">
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon" />
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+
+    <!-- Vendor CSS Files -->
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+    <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet" />
+    <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet" />
+    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet" />
+
+    <!-- CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="index.html" class="logo d-flex align-items-center">
+          <img src="assets/img/logo.png" alt="" />
+          <span class="d-none d-lg-block">Search.IT</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+      </div>
+      <!-- End Logo -->
+
+      <!-- Search Bar -->
+      <div class="search-bar Search-Container autocomplete">
+        <div class="search-form d-flex align-items-center">
+          <input
+            type="text"
+            placeholder="Buscar"
+            title="Enter search keyword"
+            class="form-control"
+            id="SearchInput"
+            type="text"
+            name="Search"
+          />
+          <button type="submit" title="Search" id="buttonSearch">
+            <i class="bi bi-search"></i>
+          </button>
         </div>
-        <button class="btn btn-primary" id="buttonSearch">
-          Buscar <span><i class="fas fa-search"></i></span>
-        </button>
-    </section>
-    <section class="suggestion-container" id="suggestion-container">
-        Quiziste decir <strong id="correction"></strong>
-    </section>
-    <div class="dynamic-continer">
+      </div>
+      <!-- End Search Bar -->
 
-        <section id="results-container">
+      <!-- Suggestion results -->
+      <section
+        class="suggestion-container text-center"
+        id="suggestion-container"
+      >
+        Quiziste decir: <strong id="correction"></strong>
+      </section>
+      <!-- End Suggestion -->
 
-        </section>
-    </div>
-    <footer>
+      <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+          <li class="nav-item d-block d-lg-none">
+            <a class="nav-link nav-icon search-bar-toggle" href="#">
+              <i class="bi bi-search"></i>
+            </a>
+          </li>
+          <!-- End Search Icon-->
+        </ul>
+      </nav>
+      <!-- End Icons Navigation -->
+    </header>
+    <!-- End Header -->
 
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <!-- Dashboard Nav -->
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <!-- End Dashboard Nav -->
+
+         <!-- F.A.Q Nav -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="pages-faq.html">
+            <i class="bi bi-question-circle"></i>
+            <span>Preguntas Frecuentes</span>
+          </a>
+        </li>
+        <!-- End F.A.Q Page Nav -->
+
+         <!-- Contac Nav -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="pages-contact.html">
+            <i class="bi bi-envelope"></i>
+            <span>Contacto</span>
+          </a>
+        </li>
+        <!-- End Contact Page Nav -->
+      </ul>
+    </aside>
+    <!-- End Sidebar-->
+
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Search.IT</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="index.html"><i class="bi bi-house-door"></i></a>
+            </li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+
+      <section class="section dashboard">
+        <div class="row">
+          <!-- Left side columns -->
+          <div class="col-lg-8">
+            <div class="row">
+              <!-- Input file  Card -->
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <i class="bi bi-upload"></i> Subir nuevo archivo
+                  </h5>
+
+                  <iframe
+                    name="dummyframe"
+                    id="dummyframe"
+                    style="display: none"
+                  ></iframe>
+
+                  <form
+                    action="http://localhost:8094/upload"
+                    enctype="multipart/form-data"
+                    method="post"
+                    autocomplete="off"
+                    target="dummyframe"
+                    class="dropzone dz-clickable text-center"
+                  >
+                    <input type="file" id="file" name="file" />
+                    <input
+                      class="btn btn-primary"
+                      type="submit"
+                      value="Subir"
+                    />
+                  </form>
+                </div>
+              </div>
+              <!-- End input file Card -->
+
+              <!-- Results -->
+              <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+                  <div class="filter">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"
+                      ><i class="bi bi-three-dots"></i
+                    ></a>
+                    <ul
+                      class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"
+                    >
+                      <li class="dropdown-header text-start">
+                        <h6>Filtrar</h6>
+                      </li>
+
+                      <li><a class="dropdown-item" href="#">Hoy</a></li>
+                      <li><a class="dropdown-item" href="#">Este Mes</a></li>
+                      <li><a class="dropdown-item" href="#">Este Año</a></li>
+                    </ul>
+                  </div>
+
+                  <div class="card-body dynamic-container">
+                    <h5 class="card-title">
+                      Resultados <span>| Archivos</span>
+                    </h5>
+                    <!-- Table with stripped rows -->
+                    <table class="table datatable" id="results-container">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Archivo</th>
+                          <th scope="col">Ver</th>
+                          <th scope="col">Descargar</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">1</th>
+                          <td>Brandon Jacob</td>
+                          <td>
+                            <span class="badge bg-info">
+                              <i class="bi bi-eye"></i> Visualizar
+                            </span>
+                          </td>
+                          <td>
+                            <span class="badge bg-success">
+                              <i class="bi bi-download"></i> Descargar
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">2</th>
+                          <td>Bridie Kessler</td>
+                          <td>
+                            <span class="badge bg-info">
+                              <i class="bi bi-eye"></i> Visualizar
+                            </span>
+                          </td>
+                          <td>
+                            <span class="badge bg-success">
+                              <i class="bi bi-download"></i> Descargar
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">3</th>
+                          <td>Ashleigh Langosh</td>
+                          <td>
+                            <span class="badge bg-info">
+                              <i class="bi bi-eye"></i> Visualizar
+                            </span>
+                          </td>
+                          <td>
+                            <span class="badge bg-success">
+                              <i class="bi bi-download"></i> Descargar
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">4</th>
+                          <td>Angus Grady</td>
+                          <td>
+                            <span class="badge bg-info">
+                              <i class="bi bi-eye"></i> Visualizar
+                            </span>
+                          </td>
+                          <td>
+                            <span class="badge bg-success">
+                              <i class="bi bi-download"></i> Descargar
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">5</th>
+                          <td>Raheem Lehner</td>
+                          <td>
+                            <span class="badge bg-info">
+                              <i class="bi bi-eye"></i> Visualizar
+                            </span>
+                          </td>
+                          <td>
+                            <span class="badge bg-success">
+                              <i class="bi bi-download"></i> Descargar
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <!-- End Table with stripped rows -->
+                  </div>
+                </div>
+              </div>
+              <!-- End Results -->
+            </div>
+          </div>
+          <!-- End Left side columns -->
+
+          <!-- Right side columns -->
+          <div class="col-lg-4">
+            <!-- News & Updates Traffic -->
+            <div class="card">
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"
+                  ><i class="bi bi-three-dots"></i
+                ></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filtrar</h6>
+                  </li>
+
+                  <li><a class="dropdown-item" href="#">Today</a></li>
+                  <li><a class="dropdown-item" href="#">This Month</a></li>
+                  <li><a class="dropdown-item" href="#">This Year</a></li>
+                </ul>
+              </div>
+
+              <div class="card-body pb-0">
+                <h5 class="card-title">Archivos Recientes<span>| Hoy</span></h5>
+
+                <div class="news">
+                  <div class="post-item clearfix">
+                    <img src="assets/img/file-icon.png" alt="" />
+                    <h4><a href="#">Nihil blanditiis at in nihil autem</a></h4>
+                    <p>
+                      Sit recusandae non aspernatur laboriosam. Quia enim
+                      eligendi sed ut harum...
+                    </p>
+                  </div>
+
+                  <div class="post-item clearfix">
+                    <img src="assets/img/file-icon.png" alt="" />
+                    <h4><a href="#">Quidem autem et impedit</a></h4>
+                    <p>
+                      Illo nemo neque maiores vitae officiis cum eum turos elan
+                      dries werona nande...
+                    </p>
+                  </div>
+
+                  <div class="post-item clearfix">
+                    <img src="assets/img/file-icon.png" alt="" />
+                    <h4>
+                      <a href="#"
+                        >Id quia et et ut maxime similique occaecati ut</a
+                      >
+                    </h4>
+                    <p>
+                      Fugiat voluptas vero eaque accusantium eos. Consequuntur
+                      sed ipsam et totam...
+                    </p>
+                  </div>
+
+                  <div class="post-item clearfix">
+                    <img src="assets/img/file-icon.png" alt="" />
+                    <h4><a href="#">Laborum corporis quo dara net para</a></h4>
+                    <p>
+                      Qui enim quia optio. Eligendi aut asperiores enim
+                      repellendusvel rerum cuder...
+                    </p>
+                  </div>
+
+                  <div class="post-item clearfix">
+                    <img src="assets/img/file-icon.png" alt="" />
+                    <h4>
+                      <a href="#">Et dolores corrupti quae illo quod dolor</a>
+                    </h4>
+                    <p>
+                      Odit ut eveniet modi reiciendis. Atque cupiditate libero
+                      beatae dignissimos eius...
+                    </p>
+                  </div>
+                </div>
+                <!-- End sidebar recent posts-->
+              </div>
+            </div>
+            <!-- End News & Updates -->
+          </div>
+          <!-- End Right side columns -->
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong><span>The WebOnes</span></strong
+        >. Todos los derechos reservados
+      </div>
+      <div class="credits">
+        Made with ❤️ by
+        <a href="https://github.com/The-WebOnes"> The WebOnes</a>
+      </div>
     </footer>
-    <script src="assets/javascript/index.js"></script>
-</body>
+    <!-- End Footer -->
 
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/quill/quill.min.js"></script>
+    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+
+    <!--  Main JS File -->
+    <script src="assets/js/main.js"></script>
+  </body>
 </html>
