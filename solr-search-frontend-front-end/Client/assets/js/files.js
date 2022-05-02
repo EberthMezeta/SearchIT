@@ -8,6 +8,7 @@ const CONTAINER_RESULTS = document.getElementById("results-container");
 const CONATINER_SUGGESTION = document.getElementById("suggestion-container");
 const CLEAN_FILTERS_BUTTON = document.getElementById("CleanFilter");
 const SUGGESTION_TAG = document.getElementById("correction");
+const TABLE_CONTAINER_RESULTS = document.getElementById("t-body-results");
 
 //Lists
 var suggestions = [];
@@ -66,21 +67,34 @@ function autocomplete(inp, arr) {
 }
 
 const generateResults = (docs, container) => {
+    console.log(docs)
     if (docs.length == 0) {
-        container.innerHTML = "No se encontraron resultados";
+        TABLE_CONTAINER_RESULTS.innerHTML = "No se encontraron resultados";
         return;
     }
 
     let TemplateHTML = ``;
+    let counter = 1;
     docs.forEach((element) => {
-        TemplateHTML += `<div>
-        <h2>
-          <a href="${element["url"]}"> ${element["title"]}</a>
-        </h2>
-        <p>${element["_snippet_"]}}...</p>
-      </div>`;
+        TemplateHTML += `<tr>
+        <th scope="row">${counter++}</th>
+        <td>${element["title"]}</td>
+        <td>
+            <span class="badge bg-info">
+                <i class="bi bi-eye"></i> 
+                <a href="http://localhost:8094/file/${element["title"]}"> Visualizar</a>
+            </span>
+        </td>
+        <td>
+            <span class="badge bg-success">
+            <i class="bi bi-download"></i> 
+            <a href="http://localhost:8094/download/${element["title"]}"
+            download="${element["title"]}"> Descargar</a>
+            </span>
+        </td>
+      </tr>`;
     });
-    container.innerHTML = TemplateHTML;
+    TABLE_CONTAINER_RESULTS.innerHTML = TemplateHTML;
 };
 
 
@@ -138,6 +152,7 @@ const getTitlesResponse = async(direction) => {
         suggestionArray = data['results']['suggest']['mySuggester'][keyWord]['suggestions'];
         suggestions = getTitleByJSON(suggestionArray);
         autocomplete(SEARCH_INPUT, suggestions);
+        console.log(suggestions)
     } catch (error) {
         console.log(error);
     }
@@ -192,10 +207,6 @@ SUGGESTION_TAG.addEventListener("click", () => {
 SEARCH_BUTTON.addEventListener("click", () => {
     CONATINER_SUGGESTION.style.display = "None";
     getResponse(SEARCH_SERVICE);
-});
-
-CLEAN_FILTERS_BUTTON.addEventListener("click", () => {
-    CleanFilter();
 });
 
 SEARCH_INPUT.addEventListener("input", () => {
