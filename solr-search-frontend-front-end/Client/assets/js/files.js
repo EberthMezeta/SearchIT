@@ -9,13 +9,32 @@ const CONTAINER_SUGGESTION = document.getElementById("suggestion-container");
 const CLEAN_FILTERS_BUTTON = document.getElementById("CleanFilter");
 const SUGGESTION_TAG = document.getElementById("correction");
 const TABLE_CONTAINER_RESULTS = document.getElementById("t-body-results");
-
+const UPLOAD_INPUT = document.getElementById("file");
+const UPLOAD_BUTTON = document.getElementById("upload-file-btn");
+const UPLOAD_ALERT = document.getElementById("upload-alert");
+const LOADING_BUTTON = document.getElementById("loading-btn");
 //Lists
 var suggestions = [];
 var docs = [];
 var correction = {};
 
 //Functions
+
+function fileValidation() {
+  var filePath = UPLOAD_INPUT.value;
+
+  // Allowing file type
+  var allowedExtensions = /(\.pdf)$/i;
+
+  if (!allowedExtensions.exec(filePath)) {
+    UPLOAD_ALERT.style.display = "block";
+    UPLOAD_INPUT.value = "";
+    return false;
+  } else {
+    LOADING_BUTTON.style.display = "inline-block";
+  }
+}
+
 function autocomplete(inp, arr) {
   if (suggestions.length == 0) {
     return;
@@ -110,12 +129,12 @@ const getResponse = async (direction) => {
       },
     });
     let data = await response.json();
-    console.log(data);
+
     if (data != 0) {
       if (
         data["results"]["0"]["responseHeader"]["params"]["json"].includes("~")
       ) {
-//Aqui hay que poner una notificacion o algo
+        //Aqui hay que poner una notificacion o algo
       }
       docs = data["results"]["0"]["response"]["docs"];
       correction = [];
@@ -127,7 +146,6 @@ const getResponse = async (direction) => {
     } else {
       CONTAINER_RESULTS.innerHTML = "No se encontraron resultados";
     }
-    console.log(data);
   } catch (error) {
     //Nos dimos cuenta que este error era debido a un mal manejo de facetas, pero esto fue arreglado al remover las facetas,
     //de todos modos si llegara a pasar algun error, esconderlo al usuario y decirle que no se encontraron resultados
@@ -220,6 +238,10 @@ SEARCH_INPUT.addEventListener("keypress", (e) => {
     CONTAINER_SUGGESTION.style.display = "None";
     getResponse(SEARCH_SERVICE);
   }
+});
+
+UPLOAD_BUTTON.addEventListener("click", () => {
+  fileValidation();
 });
 
 //Functions excecution

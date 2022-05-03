@@ -168,7 +168,37 @@
                       class="btn btn-primary"
                       type="submit"
                       value="Subir"
+                      id="upload-file-btn"
                     />
+                    <br />
+                    <button
+                      class="btn btn-primary loading"
+                      type="button"
+                      disabled
+                      id="loading-btn"
+                    >
+                      <span
+                        class="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Subiendo...
+                    </button>
+
+                    <div
+                      class="alert alert-danger alert-dismissible fade show"
+                      role="alert"
+                      id="upload-alert"
+                    >
+                      <i class="bi bi-exclamation-octagon me-1"></i>
+                      ¡Archivo inválido!
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                      ></button>
+                    </div>
                   </form>
                 </div>
               </div>

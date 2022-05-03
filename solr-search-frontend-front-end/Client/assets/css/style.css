@@ -595,6 +595,18 @@ h6 {
   margin: 2.5rem auto;
 }
 
+.dashboard .dropzone .loading {
+  text-align: center;
+  display: none;
+  margin-top: -2rem;
+  width: 100%;
+  height: 50%;
+}
+
+.dashboard .dropzone .alert-danger {
+  display: none;
+}
+
 /* Filter dropdown */
 .dashboard .filter {
   position: absolute;
