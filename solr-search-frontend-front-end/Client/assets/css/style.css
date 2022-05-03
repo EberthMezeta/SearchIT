@@ -595,7 +595,7 @@ h6 {
   margin: 2.5rem auto;
 }
 
-.dashboard .dropzone .loading {
+.dashboard .dropzone #loading-btn {
   text-align: center;
   display: none;
   margin-top: -2rem;
@@ -603,7 +603,7 @@ h6 {
   height: 50%;
 }
 
-.dashboard .dropzone .alert-danger {
+.dashboard .dropzone #upload-alert {
   display: none;
 }
 

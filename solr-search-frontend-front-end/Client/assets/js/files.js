@@ -31,7 +31,7 @@ function fileValidation() {
     UPLOAD_INPUT.value = "";
     return false;
   } else {
-    LOADING_BUTTON.style.display = "inline-block";
+      LOADING_BUTTON.style.display = "block";
   }
 }
 
@@ -86,7 +86,6 @@ function autocomplete(inp, arr) {
 }
 
 const generateResults = (docs, container) => {
-  console.log(docs);
   if (docs.length == 0) {
     TABLE_CONTAINER_RESULTS.innerHTML =
       "<tr> <td class='dataTables-empty' colspan='4'>No se enccontró ningún resultado</td> </tr>";
@@ -164,7 +163,6 @@ const getTitlesResponse = async (direction) => {
     });
 
     let data = await response.json();
-    console.log(data);
     keyWord = SEARCH_INPUT.value;
     if (keyWord == "") {
       return;
@@ -174,7 +172,6 @@ const getTitlesResponse = async (direction) => {
     suggestions = getTitleByJSON(suggestionArray);
     autocomplete(SEARCH_INPUT, suggestions);
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -206,7 +203,6 @@ const getTitle = (arrayTitles) => {
 };
 
 const getTitleByJSON = (json) => {
-  console.log(json);
   let titles = [];
   if (json == 0) {
     return titles;
