@@ -124,6 +124,21 @@
     <!-- End Sidebar-->
 
     <main id="main" class="main">
+      <div
+        class="alert alert-info alert-dismissible fade show"
+        role="alert"
+        id="search-alert"
+      >
+        <i class="bi bi-info-circle me-1"></i>
+        No se encontraron resultados exactos, seguimos buscando similares.
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+
       <div class="pagetitle">
         <h1>Search.IT</h1>
         <nav>
@@ -156,9 +171,6 @@
                   ></iframe>
 
                   <form
-                    action="http://localhost:8094/upload"
-                    enctype="multipart/form-data"
-                    method="post"
                     autocomplete="off"
                     target="dummyframe"
                     class="dropzone dz-clickable text-center"
@@ -192,6 +204,21 @@
                     >
                       <i class="bi bi-exclamation-octagon me-1"></i>
                       ¡Archivo inválido!
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+
+                    <div
+                      class="alert alert-success alert-dismissible fade show"
+                      role="alert"
+                      id="upload-alert-success"
+                    >
+                      <i class="bi bi-check-circle me-1"></i>
+                      Archivo subido con éxito.
                       <button
                         type="button"
                         class="btn-close"

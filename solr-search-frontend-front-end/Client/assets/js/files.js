@@ -12,14 +12,16 @@ const TABLE_CONTAINER_RESULTS = document.getElementById("t-body-results");
 const UPLOAD_INPUT = document.getElementById("file");
 const UPLOAD_BUTTON = document.getElementById("upload-file-btn");
 const UPLOAD_ALERT = document.getElementById("upload-alert");
+const UPLOAD_ALERT_SUCCESS = document.getElementById("upload-alert-success");
+const SEARCH_ALERT = document.getElementById("search-alert");
 const LOADING_BUTTON = document.getElementById("loading-btn");
+
 //Lists
 var suggestions = [];
 var docs = [];
 var correction = {};
 
 //Functions
-
 function fileValidation() {
   var filePath = UPLOAD_INPUT.value;
 
@@ -27,11 +29,10 @@ function fileValidation() {
   var allowedExtensions = /(\.pdf)$/i;
 
   if (!allowedExtensions.exec(filePath)) {
-    UPLOAD_ALERT.style.display = "block";
     UPLOAD_INPUT.value = "";
     return false;
   } else {
-      LOADING_BUTTON.style.display = "block";
+    return true;
   }
 }
 
@@ -133,7 +134,7 @@ const getResponse = async (direction) => {
       if (
         data["results"]["0"]["responseHeader"]["params"]["json"].includes("~")
       ) {
-        //Aqui hay que poner una notificacion o algo
+        SEARCH_ALERT.style.display = "block";
       }
       docs = data["results"]["0"]["response"]["docs"];
       correction = [];
@@ -146,8 +147,6 @@ const getResponse = async (direction) => {
       CONTAINER_RESULTS.innerHTML = "No se encontraron resultados";
     }
   } catch (error) {
-    //Nos dimos cuenta que este error era debido a un mal manejo de facetas, pero esto fue arreglado al remover las facetas,
-    //de todos modos si llegara a pasar algun error, esconderlo al usuario y decirle que no se encontraron resultados
     CONTAINER_RESULTS.innerHTML = "No se encontraron resultados";
   }
 };
@@ -171,8 +170,7 @@ const getTitlesResponse = async (direction) => {
       data["results"]["suggest"]["mySuggester"][keyWord]["suggestions"];
     suggestions = getTitleByJSON(suggestionArray);
     autocomplete(SEARCH_INPUT, suggestions);
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 const getCorrection = (arrayConter, container, tag) => {
@@ -213,6 +211,37 @@ const getTitleByJSON = (json) => {
   return titles;
 };
 
+const getResponseFile = async () => {
+  try {
+    if(!fileValidation()){
+      UPLOAD_ALERT.style.display = "block";
+      return
+    }
+    LOADING_BUTTON.style.display = "block";
+    let formData = new FormData();
+    formData.append("file", UPLOAD_INPUT.files[0]);
+    let response = await fetch("http://localhost:8094/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    let data = await response.status;
+    const status = response.headers.get("status");
+    if (data == 200) {
+      LOADING_BUTTON.style.display = "none";
+      UPLOAD_ALERT_SUCCESS.style.display = "block";
+    }
+    else {
+      UPLOAD_ALERT.style.display = "block";
+      UPLOAD_INPUT.value = "";
+      return false;
+    }
+    console.log(data);
+  } catch (error) {
+    UPLOAD_ALERT.style.display = "block";
+  }
+};
+
 //Events
 
 SUGGESTION_TAG.addEventListener("click", () => {
@@ -237,7 +266,7 @@ SEARCH_INPUT.addEventListener("keypress", (e) => {
 });
 
 UPLOAD_BUTTON.addEventListener("click", () => {
-  fileValidation();
+  getResponseFile();
 });
 
 //Functions excecution

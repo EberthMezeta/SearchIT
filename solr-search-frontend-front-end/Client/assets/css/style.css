@@ -603,7 +603,7 @@ h6 {
   height: 50%;
 }
 
-.dashboard .dropzone #upload-alert {
+.dashboard .dropzone #upload-alert, #upload-alert-success, #search-alert {
   display: none;
 }
 
