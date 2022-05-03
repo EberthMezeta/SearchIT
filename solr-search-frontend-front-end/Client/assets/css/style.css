@@ -335,9 +335,8 @@ h6 {
   box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
   background-color: #fff;
   padding-left: 20px;
-  /* Toggle Sidebar Button */
-  /* Search Bar */
 }
+
 .header .toggle-sidebar-btn {
   font-size: 32px;
   padding-left: 10px;
@@ -347,8 +346,9 @@ h6 {
 .header .search-bar {
   min-width: 360px;
   padding: 0 20px;
-  width: 30%;
+  width: 50%;
 }
+
 @media (max-width: 1199px) {
   .header .search-bar {
     position: fixed;
@@ -362,11 +362,16 @@ h6 {
     transition: 0.3s;
     visibility: hidden;
     opacity: 0;
+    width: 100%;
   }
   .header .search-bar-show {
     top: 60px;
     visibility: visible;
     opacity: 1;
+  }
+
+  .header .suggestion-container {
+    margin-right: -4.8rem;
   }
 }
 .header .search-form {
@@ -399,8 +404,16 @@ h6 {
 }
 
 .header .suggestion-container {
-  margin-left: 1rem;
+  right: 50%;
   display: none;
+  position: absolute;
+  text-align: right;
+  cursor: pointer;
+}
+
+.header .autocomplete-items{
+  margin-left: -80%;
+  cursor: pointer;
 }
 
 /*--------------------------------------------------------------
@@ -588,6 +601,7 @@ h6 {
   right: 0px;
   top: 15px;
 }
+
 .dashboard .filter .icon {
   color: #aab7cf;
   padding-right: 20px;
@@ -751,6 +765,15 @@ h6 {
   max-width: 60px;
 }
 
+.dashboard #results-container span a {
+  cursor: pointer;
+  color: #fff;
+  font-size: 0.8rem;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  text-decoration: wavy;
+}
+
 /*--------------------------------------------------------------
 # F.A.Q Page
 --------------------------------------------------------------*/
@@ -766,8 +789,8 @@ h6 {
 /*--------------------------------------------------------------
 # Contact
 --------------------------------------------------------------*/
-.social-buttons{
-margin-left: 1rem;
+.social-buttons {
+  margin-left: 1rem;
 }
 
 .social-buttons li {

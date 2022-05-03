@@ -5,7 +5,7 @@ const SUGGESTION_SERVICE = `http://localhost:8093/suggest`;
 const SEARCH_INPUT = document.getElementById("SearchInput");
 const SEARCH_BUTTON = document.getElementById("buttonSearch");
 const CONTAINER_RESULTS = document.getElementById("results-container");
-const CONATINER_SUGGESTION = document.getElementById("suggestion-container");
+const CONTAINER_SUGGESTION = document.getElementById("suggestion-container");
 const CLEAN_FILTERS_BUTTON = document.getElementById("CleanFilter");
 const SUGGESTION_TAG = document.getElementById("correction");
 const TABLE_CONTAINER_RESULTS = document.getElementById("t-body-results");
@@ -69,7 +69,7 @@ function autocomplete(inp, arr) {
 const generateResults = (docs, container) => {
     console.log(docs)
     if (docs.length == 0) {
-        TABLE_CONTAINER_RESULTS.innerHTML = "No se encontraron resultados";
+        TABLE_CONTAINER_RESULTS.innerHTML = "<tr> <td class='dataTables-empty' colspan='4'>No se enccontró ningún resultado</td> </tr>";
         return;
     }
 
@@ -81,13 +81,13 @@ const generateResults = (docs, container) => {
         <td>${element["title"]}</td>
         <td>
             <span class="badge bg-info">
-                <i class="bi bi-eye"></i> 
+                <i class="bi bi-eye"></i>
                 <a href="http://localhost:8094/file/${element["title"]}"> Visualizar</a>
             </span>
         </td>
         <td>
             <span class="badge bg-success">
-            <i class="bi bi-download"></i> 
+            <i class="bi bi-download"></i>
             <a href="http://localhost:8094/download/${element["title"]}"
             download="${element["title"]}"> Descargar</a>
             </span>
@@ -119,7 +119,7 @@ const getResponse = async(direction) => {
                 correction = data["results"]["0"]["spellcheck"]["suggestions"];
             }
             generateResults(docs, CONTAINER_RESULTS);
-            getCorrection(correction, CONATINER_SUGGESTION, SUGGESTION_TAG);
+            getCorrection(correction, CONTAINER_SUGGESTION, SUGGESTION_TAG);
         } else {
             CONTAINER_RESULTS.innerHTML = "No se encontraron resultados";
         }
@@ -201,17 +201,24 @@ const getTitleByJSON = (json) => {
 
 SUGGESTION_TAG.addEventListener("click", () => {
     SEARCH_INPUT.value = SUGGESTION_TAG.textContent;
-    CONATINER_SUGGESTION.style.display = "none";
+    CONTAINER_SUGGESTION.style.display = "none";
 });
 
 SEARCH_BUTTON.addEventListener("click", () => {
-    CONATINER_SUGGESTION.style.display = "None";
+    CONTAINER_SUGGESTION.style.display = "None";
     getResponse(SEARCH_SERVICE);
 });
 
 SEARCH_INPUT.addEventListener("input", () => {
     getTitlesResponse(SUGGESTION_SERVICE)
 });
+
+SEARCH_INPUT.addEventListener("keypress", (e)=> {
+    if (e.key === "Enter") {
+        CONTAINER_SUGGESTION.style.display = "None";
+        getResponse(SEARCH_SERVICE);
+    }
+  });
 
 //Functions excecution
 autocomplete(SEARCH_INPUT, suggestions);

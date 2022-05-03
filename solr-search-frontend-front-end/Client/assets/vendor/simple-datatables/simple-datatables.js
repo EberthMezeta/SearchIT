@@ -1441,7 +1441,6 @@
                   class: "dataTable-wrapper dataTable-loading",
                 })),
                 (i += "<div class='dataTable-top'>"),
-                (i += s.layout.top),
                 (i += "</div>"),
                 s.scrollY.length
                   ? (i += `<div class='dataTable-container' style='height: ${s.scrollY}; overflow-Y: auto;'></div>`)
@@ -1454,18 +1453,7 @@
                   s.paging ? "<div class='dataTable-info'></div>" : ""
                 )),
                 s.paging && s.perPageSelect)
-              ) {
-                let t = "<div class='dataTable-dropdown'><label>";
-                (t += s.labels.perPage), (t += "</label></div>");
-                const a = e("select", { class: "dataTable-selector" });
-                s.perPageSelect.forEach((t) => {
-                  const e = t === s.perPage,
-                    i = new Option(t, t, e, e);
-                  a.add(i);
-                }),
-                  (t = t.replace("{select}", a.outerHTML)),
-                  (i = i.replace("{select}", t));
-              } else i = i.replace("{select}", "");
+              )
               if (s.searchable) {
                 const t = `<div class='dataTable-search'><input class='dataTable-input' placeholder='${s.labels.placeholder}' type='text'></div>`;
                 i = i.replace("{search}", t);
