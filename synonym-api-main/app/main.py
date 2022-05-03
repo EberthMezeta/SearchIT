@@ -18,5 +18,17 @@ async def spa_synonym(word:str):
         print(traceback.format_exc())
         return []
 
+@app.get("/eng")
+async def eng_synonym(word:str):
+    try:
+        results = []
+        for syn in wordnet.synsets(word, lang=('eng')):
+            for name in syn.lemma_names('eng'):
+                results.append(name)
+        return results
+    except BaseException as ex:
+        print(traceback.format_exc())
+        return []
+
 if __name__=="__main__":
     uvicorn.run("main:app",host='localhost', port=8091, reload=True, debug=True)
