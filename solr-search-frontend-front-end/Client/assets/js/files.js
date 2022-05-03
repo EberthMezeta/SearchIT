@@ -9,6 +9,12 @@ const CONTAINER_SUGGESTION = document.getElementById("suggestion-container");
 const CLEAN_FILTERS_BUTTON = document.getElementById("CleanFilter");
 const SUGGESTION_TAG = document.getElementById("correction");
 const TABLE_CONTAINER_RESULTS = document.getElementById("t-body-results");
+const UPLOAD_INPUT = document.getElementById("file");
+const UPLOAD_BUTTON = document.getElementById("upload-file-btn");
+const UPLOAD_ALERT_ERR = document.getElementById("upload-alert");
+const UPLOAD_ALERT_SUCCESS = document.getElementById("upload-alert-success");
+const SEARCH_ALERT = document.getElementById("search-alert");
+const LOADING_BUTTON = document.getElementById("loading-btn");
 
 //Lists
 var suggestions = [];
@@ -16,6 +22,20 @@ var docs = [];
 var correction = {};
 
 //Functions
+function fileValidation() {
+    var filePath = UPLOAD_INPUT.value;
+
+    // Allowing file type
+    var allowedExtensions = /(\.pdf)$/i;
+
+    if (!allowedExtensions.exec(filePath)) {
+        UPLOAD_INPUT.value = "";
+        return false;
+    } else {
+        return true;
+    }
+}
+
 function autocomplete(inp, arr) {
     if (suggestions.length == 0) {
         return;
@@ -67,9 +87,9 @@ function autocomplete(inp, arr) {
 }
 
 const generateResults = (docs, container) => {
-    console.log(docs)
     if (docs.length == 0) {
-        TABLE_CONTAINER_RESULTS.innerHTML = "<tr> <td class='dataTables-empty' colspan='4'>No se enccontró ningún resultado</td> </tr>";
+        TABLE_CONTAINER_RESULTS.innerHTML =
+            "<tr> <td class='dataTables-empty' colspan='4'>No se enccontró ningún resultado</td> </tr>";
         return;
     }
 
@@ -82,13 +102,15 @@ const generateResults = (docs, container) => {
         <td>
             <span class="badge bg-info">
                 <i class="bi bi-eye"></i>
-                <a href="http://localhost:8094/file/${element["title"]}"> Visualizar</a>
+                <a href="http://localhost:8094/file/${
+                  encodeURIComponent(element["title"])
+                }"> Visualizar</a>
             </span>
         </td>
         <td>
             <span class="badge bg-success">
             <i class="bi bi-download"></i>
-            <a href="http://localhost:8094/download/${element["title"]}"
+            <a href="http://localhost:8094/download/${encodeURIComponent(element["title"])}"
             download="${element["title"]}"> Descargar</a>
             </span>
         </td>
@@ -97,9 +119,9 @@ const generateResults = (docs, container) => {
     TABLE_CONTAINER_RESULTS.innerHTML = TemplateHTML;
 };
 
-
 const getResponse = async(direction) => {
     try {
+        SEARCH_ALERT.style.display = "none"
         let Search = SEARCH_INPUT.value;
         const response = await fetch(direction + `?q=${Search}`, {
             method: "GET",
@@ -108,14 +130,16 @@ const getResponse = async(direction) => {
             },
         });
         let data = await response.json();
-        console.log(data);
+
         if (data != 0) {
-            if (data["results"]['0']['responseHeader']['params']['json'].includes("~")) {
-                alert('Fuzzy Search aplicado');
+            if (
+                data["results"]["0"]["responseHeader"]["params"]["json"].includes("~")
+            ) {
+                SEARCH_ALERT.style.display = "block";
             }
             docs = data["results"]["0"]["response"]["docs"];
             correction = [];
-            if ('spellcheck' in data["results"]["0"]) {
+            if ("spellcheck" in data["results"]["0"]) {
                 correction = data["results"]["0"]["spellcheck"]["suggestions"];
             }
             generateResults(docs, CONTAINER_RESULTS);
@@ -123,13 +147,8 @@ const getResponse = async(direction) => {
         } else {
             CONTAINER_RESULTS.innerHTML = "No se encontraron resultados";
         }
-        console.log(data)
-
     } catch (error) {
-        //Nos dimos cuenta que este error era debido a un mal manejo de facetas, pero esto fue arreglado al remover las facetas,
-        //de todos modos si llegara a pasar algun error, esconderlo al usuario y decirle que no se encontraron resultados
         CONTAINER_RESULTS.innerHTML = "No se encontraron resultados";
-        console.log(error)
     }
 };
 
@@ -144,18 +163,15 @@ const getTitlesResponse = async(direction) => {
         });
 
         let data = await response.json();
-        console.log(data);
         keyWord = SEARCH_INPUT.value;
         if (keyWord == "") {
             return;
         }
-        suggestionArray = data['results']['suggest']['mySuggester'][keyWord]['suggestions'];
+        suggestionArray =
+            data["results"]["suggest"]["mySuggester"][keyWord]["suggestions"];
         suggestions = getTitleByJSON(suggestionArray);
         autocomplete(SEARCH_INPUT, suggestions);
-        console.log(suggestions)
-    } catch (error) {
-        console.log(error);
-    }
+    } catch (error) {}
 };
 
 const getCorrection = (arrayConter, container, tag) => {
@@ -186,7 +202,6 @@ const getTitle = (arrayTitles) => {
 };
 
 const getTitleByJSON = (json) => {
-    console.log(json)
     let titles = [];
     if (json == 0) {
         return titles;
@@ -195,6 +210,39 @@ const getTitleByJSON = (json) => {
         titles.push(element["term"]);
     });
     return titles;
+};
+
+const getResponseFile = async() => {
+    try {
+        LOADING_BUTTON.style.display = "none";
+        UPLOAD_ALERT_ERR.style.display = "none";
+        UPLOAD_ALERT_SUCCESS.display = "none"
+        if (!fileValidation()) {
+            UPLOAD_ALERT_ERR.style.display = "block";
+            return
+        }
+        LOADING_BUTTON.style.display = "block";
+        let formData = new FormData();
+        formData.append("file", UPLOAD_INPUT.files[0]);
+        let response = await fetch("http://localhost:8094/upload", {
+            method: "POST",
+            body: formData,
+        });
+
+        let data = await response.status;
+        const status = response.headers.get("status");
+        if (data == 200) {
+            LOADING_BUTTON.style.display = "none";
+            UPLOAD_ALERT_SUCCESS.style.display = "block";
+        } else {
+            UPLOAD_ALERT_ERR.style.display = "block";
+            UPLOAD_INPUT.value = "";
+            return false;
+        }
+        console.log(data);
+    } catch (error) {
+        UPLOAD_ALERT_ERR.style.display = "block";
+    }
 };
 
 //Events
@@ -210,15 +258,19 @@ SEARCH_BUTTON.addEventListener("click", () => {
 });
 
 SEARCH_INPUT.addEventListener("input", () => {
-    getTitlesResponse(SUGGESTION_SERVICE)
+    getTitlesResponse(SUGGESTION_SERVICE);
 });
 
-SEARCH_INPUT.addEventListener("keypress", (e)=> {
+SEARCH_INPUT.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
         CONTAINER_SUGGESTION.style.display = "None";
         getResponse(SEARCH_SERVICE);
     }
-  });
+});
+
+UPLOAD_BUTTON.addEventListener("click", () => {
+    getResponseFile();
+});
 
 //Functions excecution
 autocomplete(SEARCH_INPUT, suggestions);
