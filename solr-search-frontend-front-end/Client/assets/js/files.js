@@ -212,13 +212,19 @@ const getTitleByJSON = (json) => {
     return titles;
 };
 
+const handleFileUploadError = () => {
+    UPLOAD_INPUT.value = "";
+    LOADING_BUTTON.style.display = "none";
+    UPLOAD_ALERT_ERR.style.display = "block";
+}
+
 const getResponseFile = async() => {
     try {
         LOADING_BUTTON.style.display = "none";
         UPLOAD_ALERT_ERR.style.display = "none";
         UPLOAD_ALERT_SUCCESS.display = "none"
         if (!fileValidation()) {
-            UPLOAD_ALERT_ERR.style.display = "block";
+            handleFileUploadError()
             return
         }
         LOADING_BUTTON.style.display = "block";
@@ -235,13 +241,12 @@ const getResponseFile = async() => {
             LOADING_BUTTON.style.display = "none";
             UPLOAD_ALERT_SUCCESS.style.display = "block";
         } else {
-            UPLOAD_ALERT_ERR.style.display = "block";
-            UPLOAD_INPUT.value = "";
+            handleFileUploadError()
             return false;
         }
         console.log(data);
     } catch (error) {
-        UPLOAD_ALERT_ERR.style.display = "block";
+        handleFileUploadError()
     }
 };
 
