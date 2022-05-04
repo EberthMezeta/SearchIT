@@ -123,7 +123,7 @@ const getResponse = async(direction) => {
     try {
         SEARCH_ALERT.style.display = "none"
         let Search = SEARCH_INPUT.value;
-        const response = await fetch(direction + `?q=${Search}`, {
+        const response = await fetch(direction + `?query=${Search}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -155,7 +155,7 @@ const getResponse = async(direction) => {
 const getTitlesResponse = async(direction) => {
     try {
         let Search = SEARCH_INPUT.value;
-        const response = await fetch(direction + `?q=${Search}`, {
+        const response = await fetch(direction + `?query=${Search}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

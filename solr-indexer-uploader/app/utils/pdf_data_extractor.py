@@ -1,9 +1,8 @@
 import pdfplumber
 import re
-from os import getcwd
 
 
-class pdfDataExtractor:
+class PdfDataExtractor:
 
     def __remove_white_space(self, raw_text):
         textUnWhiteSPace = " ".join(re.split(r"\s+", raw_text))
@@ -27,8 +26,3 @@ class pdfDataExtractor:
 
         content = self.__remove_white_space(content)
         return content
-
-    def get_meta_data(self, Path_File):
-        with pdfplumber.open(Path_File) as pdf:
-            data = pdf.metadata
-        return data
