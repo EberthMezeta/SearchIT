@@ -1,15 +1,17 @@
-import os
+
 import json
 import traceback
+from app.constants import solr_host, params, headers, request_object
+from app.tokenizer import tokenizer
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
-import uvicorn, requests
-import unidecode
-from nltk import word_tokenize
-from nltk.corpus import stopwords
+import uvicorn
+import requests
+
 
 app = FastAPI(docs_url="/")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,82 +20,39 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-solr_host = os.getenv("SOLR_HOST", "host.docker.internal")
-title_weight_multiplier = os.getenv("ROWS", 20)
-text_weight_multiplier = os.getenv("ROWS", 2)
-rows = os.getenv("ROWS", 200)
-
-params = f"?fl=score&fl=*&defType=edismax&qf=_title_^{title_weight_multiplier}+_text_^{text_weight_multiplier}&rows={rows}"
-
-headers = {
-    'Content-Type': 'application/json'
-}
-
-
-request_object = {
-  "query": "query_replacement",
-}
-
 
 @app.get("/query")
-async def query_endpoint(q:str):
+async def query_endpoint(query: str):
     try:
-        first_response = requests.post(f"http://{solr_host}:8983/solr/mycore/query{params}", headers=headers ,data=json.dumps(request_object).replace("query_replacement", q).encode('utf-8'))
+        first_response = requests.post(f"http://{solr_host}:8983/solr/mycore/query{params}", headers=headers,
+                                       data=json.dumps(request_object).replace("query_replacement", query).encode('utf-8'))
         first_response_json = first_response.json()
         if first_response_json['response']['numFound'] > 0:
             return {"results": [first_response_json]}
-        
-        fuzzy_query = get_clean_query(q)
-        second_response = requests.post(f"http://{solr_host}:8983/solr/mycore/query{params}", headers=headers ,data=json.dumps(request_object).replace("query_replacement", fuzzy_query).encode('utf-8'))
+
+        tokenizer_object = tokenizer()
+
+        fuzzy_query = tokenizer_object.get_clean_query(query)
+        second_response = requests.post(f"http://{solr_host}:8983/solr/mycore/query{params}", headers=headers, data=json.dumps(
+            request_object).replace("query_replacement", fuzzy_query).encode('utf-8'))
         second_response_json = second_response.json()
         return {"results": [second_response_json]}
 
     except BaseException as ex:
         return {"results": [traceback.format_exc()]}
 
+
 @app.get("/suggest")
-async def suggest_endpoint(q:str):
+async def suggest_endpoint(query: str):
     try:
-        suggest_response = requests.get(f"http://{solr_host}:8983/solr/mycore/suggest?suggest=true&suggest.build=true&suggest.dictionary=mySuggester&wt=json&suggest.q={q}".encode('utf-8')) 
+        suggest_response = requests.get(
+            f"http://{solr_host}:8983/solr/mycore/suggest?suggest=true&suggest.build=true&suggest.dictionary=mySuggester&wt=json&suggest.q={query}".encode('utf-8'))
         suggest_json = suggest_response.json()
-        return {"results": suggest_json}   
+        return {"results": suggest_json}
     except BaseException as ex:
         return {"results": [traceback.format_exc()]}
 
 
-def get_clean_query(q):
-    try:
-        #lower case
-        clean_query = q.lower() 
-        #remove accents
-        clean_query = unidecode.unidecode(clean_query) 
-        #tokenize
-        tokens = word_tokenize(clean_query, language="spanish")
-        #Remove punctuations, other formalities of grammar
-        tokens = [word for word in tokens if word.isalpha()]
-        #Remove white spaces and StopWords
-        tokens = [word for word in tokens if not word in stopwords.words("spanish")]
-        
-        clean_query = ""
-        for token in tokens:
-            word = str(token)
-            if word != 'not' and word != 'and' and word != 'or':
-                clean_query = clean_query + word + '~ '
-            else:
-                clean_query = clean_query + word + ' '
-
-        if len(tokens) == 0:
-            clean_query = '*:*'
-
-        return clean_query
-
-    except BaseException as ex:
-        print(traceback.format_exc())
-        '''
-        Si hay algun error en el procesamiento de la consulta, 
-        no hay que fallar, hay que presentar resultados
-        '''
-        return '*:*'
-
-if __name__=="__main__":
-    uvicorn.run("main:app",host='localhost', port=8093, reload=True, debug=True)
+if __name__ == "__main__":
+    uvicorn.run("main:app", host='localhost',
+                port=8093, reload=True, debug=True)

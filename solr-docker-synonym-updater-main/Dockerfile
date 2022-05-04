@@ -1,5 +1,5 @@
 FROM python:3.7-slim
-RUN pip3 install fastapi uvicorn requests unidecode 
+RUN pip3 install fastapi uvicorn requests unidecode typing
 EXPOSE 8092
 COPY ./app /app
 
