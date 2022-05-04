@@ -13,19 +13,27 @@
     <!-- for nested documents (relationship tracking)    <field name="score" type="pdouble" indexed="true" stored="true" multiValued="false"/> -->
     <field name="_nest_path_" type="_nest_path_" /><fieldType name="_nest_path_" class="solr.NestPathField" />
     <field name="_title_" type="text_general" indexed="true" stored="false" multiValued="true"/>
-    <field name="title" type="string" indexed="true" stored="true" multiValued="true"/>
-    <field name="text" type="text_general" indexed="true" stored="true" multiValued="true"/>
+    <field name="title" type="spellcheck_type" indexed="true" stored="true" multiValued="true"/>
+    <field name="text" type="spellcheck_type" indexed="true" stored="true" multiValued="true"/>
     <field name="_text_" type="text_general" indexed="true" stored="false" multiValued="true"/>
     <field name="_snippet_" type="string" indexed="true" stored="true" multiValued="true"/>
 
 
 
-    <field name="spellcheck" type="text_general" indexed="true" stored="false"  multiValued="true"/>
+    <field name="spellcheck" type="spellcheck_type" indexed="true" stored="false"  multiValued="true"/>
     <field name="_fullsearch_" type="text_general" indexed="true" stored="false"  multiValued="true"/>
     <copyField source="_title_" dest="_fullsearch_"/>
     <copyField source="_text_" dest="_fullsearch_"/>
     <copyField source="title" dest="spellcheck"/>
     <copyField source="text" dest="spellcheck"/>
+
+
+    <fieldType name="spellcheck_type" class="solr.TextField" positionIncrementGap="100" multiValued="true">
+      <analyzer>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
     <!-- This can be enabled, in case the client does not know what fields may be searched. It isn't enabled by default
          because it's very expensive to index everything twice. -->
     <!-- <copyField source="*" dest="_text_"/> -->
