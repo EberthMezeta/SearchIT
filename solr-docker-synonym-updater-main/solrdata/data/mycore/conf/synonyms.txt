@@ -1,12 +1,5 @@
 GB,gib,gigabyte,gigabytes
 MB,mib,megabyte,megabytes
 Television, Televisions, TV, TVs
-cargo,deber,tarea,trabajo,cometido,faena,quehacer,proyecto,empresa
-fuente,plato,bandeja,canal,semilla,referencia,nacimiento,origen,principio
-agrupar,envolver,combinar,unir
-camino,forma,manera,modo,medio,metodo
-organismo,ser,ser_vivo,constituir,representar,equivaler,significar
-bloque,bloqueo,cierre,detencion,obstruccion,oclusion,parada,cubo
-fallar,acabarse,agotarse,errar,abandonar,traicionar,descuidar
-aderezar,endurecer,preparar,disponer,formar,entrenar,arreglar,fijar,organizar,componer,hacer,cocinar,guisar
-fallo,sentencia,decision,auto,decreto,edicto,autorizacion,declaracion,dictamen,dictum,pronunciamiento,adagio
+examen,prueba,experimento,conato,disposicion,pase,tentativa,vuelta,ensayo,test,audicion,demostracion,comprobacion,informe,experimentacion,evidencia,hecho,quiz,campeonato,certamen,competicion,concurso,contienda
+PALACIO,CASTILLO
